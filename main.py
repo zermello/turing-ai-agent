@@ -1,11 +1,22 @@
 import ollama
 import tools.calculator as cal
 import tools.weather as wtr
+import logging
+import os
 
 
 print("Welcome to my AI agent")
 
 MODEL_NAME = "qwen2.5:1.5b"
+
+os.makedirs("logs", exist_ok=True)
+
+logging.basicConfig(
+    filename = "logs/agent.log",
+    level = logging.INFO,
+    format = "%(asctime)s - %(levelname)s - %(message)s",
+    force = True
+)
 
 
 tools = [
@@ -49,7 +60,9 @@ tools = [
 messages = [
     {
         "role": "system",
-        "content": "You are a helpful AI assistant, youre name is Michalangelo, you were created by zermello, youre founder is zermello. Answer clearly and concisely."
+        "content": """You are a helpful AI assistant, youre name is TURING, you were created by zermello. Answer clearly and concisely.
+          For current weather questions, always use the weather tool and never make up weather information.
+          For calculation questions always use the calculate tool and never make up calculate information"""
     }
 ]
 
@@ -69,6 +82,8 @@ while True:
         "content": user_message
     })
 
+    logging.info(f"USER: {user_message}")
+
 
     # Ask Ollama what to do
     response = ollama.chat(
@@ -84,33 +99,36 @@ while True:
         # Save Ollama's tool-call message
         messages.append(response.message)
 
-        tool_call = response.message.tool_calls[0]
+        for  tool_call in response.message.tool_calls:
+            function_name = tool_call.function.name
+            function_arguments = tool_call.function.arguments
 
-        function_name = tool_call.function.name
-        function_arguments = tool_call.function.arguments
-
-
-        # Calculator tool
-        if function_name == "calculate":
-
-            expression = function_arguments["expression"]
-
-            result = cal.calculate(expression)
+            logging.info(f"FUNCTION: {function_name}")
 
 
-        # Weather tool
-        elif function_name == "weather":
+            # Calculator tool
+            if function_name == "calculate":
 
-            city = function_arguments["city"]
+                expression = function_arguments["expression"]
 
-            result = wtr.get_weather(city)
+                result = cal.calculate(expression)
+                logging.info(f"RESULT: {result}")
 
 
-        # Add tool result to memory
-        messages.append({
-            "role": "tool",
-            "content": str(result)
-        })
+            # Weather tool
+            elif function_name == "weather":
+
+                city = function_arguments["city"]
+
+                result = wtr.get_weather(city)
+                logging.info(f"RESULT: {result}")
+
+
+            # Add tool result to memory
+            messages.append({
+                "role": "tool",
+                "content": str(result)
+            })
 
 
         # Send tool result back to Ollama
@@ -122,6 +140,7 @@ while True:
 
         # Print final answer
         print(final_response.message.content)
+        logging.info(f"AI: {final_response.message.content}")
 
 
         # Save final answer to memory
@@ -135,6 +154,7 @@ while True:
     else:
 
         print(response.message.content)
+        logging.info(f"AI: {response.message.content}")
 
         messages.append({
             "role": "assistant",
