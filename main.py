@@ -1,6 +1,7 @@
 import ollama
 import tools.calculator as cal
 import tools.weather as wtr
+import tools.time as time
 import logging
 import os
 
@@ -53,7 +54,24 @@ tools = [
                 "required": ["city"]
             }
         }
-    }
+    },
+    {
+            "type": "function",
+            "function": {
+                "name": "time",
+                "description": "Get the current time of a location",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "location": {
+                            "type": "string",
+                            "description": "The city to get the time"
+                        }
+                    },
+                    "required": ["location"]
+                }
+            }
+        }
 ]
 
 
@@ -62,15 +80,32 @@ messages = [
         "role": "system",
         "content": """You are a helpful AI assistant, youre name is TURING, you were created by zermello. Answer clearly and concisely.
           For current weather questions, always use the weather tool and never make up weather information.
-          For calculation questions always use the calculate tool and never make up calculate information"""
+          For calculation questions always use the calculate tool and never make up calculate information.
+          For time questions always use the time tool and never make up time information"""
     }
 ]
 
 
+def route_request(user_input):
+    user_input = user_input.lower()
+
+    if "time" in user_input:
+            return "time"
+
+    elif "weather" in user_input:
+            return "weather"
+
+    elif any(operator in user_input for operator in ["+", "-", "*", "/"]):
+            return "calculate"
+
+    else:
+            return "none"
+            
 while True:
 
     user_message = input("What do you want to know?: ")
-
+    intent = route_request(user_message)
+    print(intent)
     if user_message.lower() == "exit":
         print("Goodbye!")
         break
@@ -122,6 +157,14 @@ while True:
 
                 result = wtr.get_weather(city)
                 logging.info(f"RESULT: {result}")
+            
+            elif function_name == "time":
+
+                location = function_arguments["location"]
+
+                result = time.get_time(location)
+                logging.info(f"RESULT: {result}")
+
 
 
             # Add tool result to memory
