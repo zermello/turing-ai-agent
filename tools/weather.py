@@ -5,7 +5,7 @@ def get_weather(city):
     try:
         url = f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=10&language=en&format=json"
 
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=5)
         data = response.json()
 
         if not data.get("results"):
@@ -23,6 +23,6 @@ def get_weather(city):
        logging.error("fERROR: {err}")
        return "The API/internet could not be reached"
     except Exception as err:
-        logging.error("fERROR: {err}")
+        logging.error(f"ERROR: {err}")
         return f"The give city is spelled wrong or not found"
 

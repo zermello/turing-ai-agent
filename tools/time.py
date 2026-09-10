@@ -10,6 +10,8 @@ def get_time(location):
        logging.error(f"Error: {err}")
        return f"Invalid timezone/location. Please provide a valid timezone."
 
+get_time("india")
+
 
 
 

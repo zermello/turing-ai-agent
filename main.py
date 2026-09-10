@@ -86,26 +86,31 @@ messages = [
 ]
 
 
+
+
 def route_request(user_input):
+    intents = []
     user_input = user_input.lower()
 
     if "time" in user_input:
-            return "time"
+            intents.append("time")
 
-    elif "weather" in user_input:
-            return "weather"
+    if "weather" in user_input:
+            intents.append("weather")
 
-    elif any(operator in user_input for operator in ["+", "-", "*", "/"]):
-            return "calculate"
+    if any(operator in user_input for operator in ["+", "-", "*", "/"]):
+            intents.append("calculate")
 
-    else:
-            return "none"
-            
+    if not intents:
+         intents.append("none")
+
+    return intents
+   
 while True:
 
     user_message = input("What do you want to know?: ")
-    intent = route_request(user_message)
-    print(intent)
+    intents = route_request(user_message)
+
     if user_message.lower() == "exit":
         print("Goodbye!")
         break
@@ -119,12 +124,20 @@ while True:
 
     logging.info(f"USER: {user_message}")
 
+    selected_tools = []
+
+    for tool in tools:
+         tool_name = tool["function"]["name"]
+
+         if tool_name in intents:
+              selected_tools.append(tool)
+
 
     # Ask Ollama what to do
     response = ollama.chat(
         model=MODEL_NAME,
         messages=messages,
-        tools=tools
+        tools=selected_tools
     )
 
 

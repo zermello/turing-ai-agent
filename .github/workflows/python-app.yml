@@ -23,4 +23,4 @@ jobs:
 
       - name: Check Python syntax
         run: |
-          python -m py_compile main.py tools/calculator.py tools/weather.py
+          python -m py_compile main.py tools/calculator.py tools/weather.py tools/time.py
