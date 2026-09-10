@@ -1,17 +1,32 @@
 import sqlite3
-import os
-
-os.makedirs("data", exist_ok=True)
 
 connection = sqlite3.connect("data/memory.db")
 cursor = connection.cursor()
 
-x=cursor.execute("""
+cursor.execute("""
     CREATE TABLE IF NOT EXISTS memories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         content TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIME
     )
 """)
 
-connection.commit()
+def save_memory(content):
+    cursor.execute("""
+        INSERT INTO memories (content)
+        VALUES (?)
+    """, (content, )
+    )
+
+    connection.commit()
+
+def get_memory():
+    cursor.execute("""
+    SELECT *
+    FROM memories
+    """)
+
+    return cursor.fetchall()
+
+x=get_memory()
+print(x)

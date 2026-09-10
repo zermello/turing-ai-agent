@@ -2,6 +2,7 @@ import ollama
 import tools.calculator as cal
 import tools.weather as wtr
 import tools.time as time
+import tools.memory_tool as mry
 import logging
 import os
 
@@ -71,7 +72,24 @@ tools = [
                     "required": ["location"]
                 }
             }
-        }
+        },
+        {
+                    "type": "function",
+                    "function": {
+                        "name": "memory",
+                        "description": "Get the memory",
+                        "parameters": {
+                            "type": "object",
+                            "properties": {
+                                "content": {
+                                    "type": "string",
+                                    "description": "Memory to be stored"
+                                }
+                            },
+                            "required": ["content"]
+                        }
+                    }
+                }
 ]
 
 
@@ -81,7 +99,8 @@ messages = [
         "content": """You are a helpful AI assistant, youre name is TURING, you were created by zermello, youre founder is zermello too. Answer clearly and concisely.
           For current weather questions, always use the weather tool and never make up weather information.
           For calculation questions always use the calculate tool and never make up calculate information.
-          For time questions always use the time tool and never make up time information"""
+          For time questions always use the time tool and never make up time information
+          For requests to remember, save, store, or not forget information, always use the memory tool."""
     }
 ]
 
@@ -98,6 +117,9 @@ def route_request(user_input):
     if "weather" in user_input:
             intents.append("weather")
 
+    if any(phrase in user_input for phrase in ["remember", "save this", "store this", "don't forget"]):
+                intents.append("memory")
+
     if any(operator in user_input for operator in ["+", "-", "*", "/"]):
             intents.append("calculate")
 
@@ -110,6 +132,7 @@ while True:
 
     user_message = input("What do you want to know?: ")
     intents = route_request(user_message)
+    print(intents)
 
     if user_message.lower() == "exit":
         print("Goodbye!")
@@ -177,6 +200,14 @@ while True:
 
                 result = time.get_time(location)
                 logging.info(f"RESULT: {result}")
+
+            elif function_name == "memory":
+            
+                    content = function_arguments["content"]
+                    
+            
+                    result = mry.memory_tool(content)
+                    logging.info(f"RESULT: {result}")
 
 
 
