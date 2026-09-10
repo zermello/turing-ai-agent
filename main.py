@@ -111,6 +111,8 @@ while True:
     user_message = input("What do you want to know?: ")
     intents = route_request(user_message)
 
+    print(intents)
+
     if user_message.lower() == "exit":
         print("Goodbye!")
         break
@@ -150,6 +152,9 @@ while True:
         for  tool_call in response.message.tool_calls:
             function_name = tool_call.function.name
             function_arguments = tool_call.function.arguments
+            if not isinstance(function_arguments, dict):
+                print("Invalid tool arguments")
+                continue
 
             logging.info(f"FUNCTION: {function_name}")
 
@@ -173,7 +178,7 @@ while True:
             
             elif function_name == "time":
 
-                location = function_arguments["location"]
+                location = function_arguments["location"]["value"]
 
                 result = time.get_time(location)
                 logging.info(f"RESULT: {result}")
