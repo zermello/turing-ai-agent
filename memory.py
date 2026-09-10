@@ -27,6 +27,3 @@ def get_memory():
     """)
 
     return cursor.fetchall()
-
-x=get_memory()
-print(x)

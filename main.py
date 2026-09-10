@@ -92,6 +92,7 @@ tools = [
                 }
 ]
 
+old_memories = mry.get_memory_tool()
 
 messages = [
     {
@@ -101,7 +102,11 @@ messages = [
           For calculation questions always use the calculate tool and never make up calculate information.
           For time questions always use the time tool and never make up time information
           For requests to remember, save, store, or not forget information, always use the memory tool."""
-    }
+    },
+    {
+            "role": "system",
+            "content": str(old_memories)
+        }
 ]
 
 
@@ -132,7 +137,6 @@ while True:
 
     user_message = input("What do you want to know?: ")
     intents = route_request(user_message)
-    print(intents)
 
     if user_message.lower() == "exit":
         print("Goodbye!")
@@ -203,10 +207,13 @@ while True:
 
             elif function_name == "memory":
             
-                    content = function_arguments["content"]
+                    content = function_arguments.get("content", {}).get("content")
+                    print(function_arguments)
                     
-            
-                    result = mry.memory_tool(content)
+                    if content:
+                        result = mry.memory_tool(content)
+                    else:
+                        result = "Memory content was not provided."
                     logging.info(f"RESULT: {result}")
 
 
