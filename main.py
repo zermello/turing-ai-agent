@@ -78,7 +78,7 @@ tools = [
 messages = [
     {
         "role": "system",
-        "content": """You are a helpful AI assistant, youre name is TURING, you were created by zermello. Answer clearly and concisely.
+        "content": """You are a helpful AI assistant, youre name is TURING, you were created by zermello, youre founder is zermello too. Answer clearly and concisely.
           For current weather questions, always use the weather tool and never make up weather information.
           For calculation questions always use the calculate tool and never make up calculate information.
           For time questions always use the time tool and never make up time information"""
@@ -110,8 +110,6 @@ while True:
 
     user_message = input("What do you want to know?: ")
     intents = route_request(user_message)
-
-    print(intents)
 
     if user_message.lower() == "exit":
         print("Goodbye!")
@@ -152,9 +150,6 @@ while True:
         for  tool_call in response.message.tool_calls:
             function_name = tool_call.function.name
             function_arguments = tool_call.function.arguments
-            if not isinstance(function_arguments, dict):
-                print("Invalid tool arguments")
-                continue
 
             logging.info(f"FUNCTION: {function_name}")
 
