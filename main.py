@@ -93,6 +93,7 @@ tools = [
 ]
 
 old_memories = mry.get_memory_tool()
+print(old_memories)
 
 messages = [
     {
@@ -104,9 +105,10 @@ messages = [
           For requests to remember, save, store, or not forget information, always use the memory tool."""
     },
     {
-            "role": "system",
-            "content": str(old_memories)
-        }
+        "role": "system",
+        "content": "These are memories stored from previous conversations:\n" +
+               "\n".join(f"- {memory}" for memory in old_memories)
+    }
 ]
 
 
@@ -207,7 +209,7 @@ while True:
 
             elif function_name == "memory":
             
-                    content = function_arguments.get("content", {}).get("content")
+                    content = function_arguments.get("value")
                     print(function_arguments)
                     
                     if content:
