@@ -20,7 +20,7 @@ def get_weather(city):
         weather = data["current"]["temperature_2m"]
         return f"Currently, it's {weather}C in {city}"
     except requests.exceptions.RequestException as err:
-       logging.error("fERROR: {err}")
+       logging.error(f"ERROR: {err}")
        return "The API/internet could not be reached"
     except Exception as err:
         logging.error(f"ERROR: {err}")

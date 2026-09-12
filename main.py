@@ -74,27 +74,22 @@ tools = [
             }
         },
         {
-        "type": "function",
-        "function": {
-            "name": "memory",
-            "description": "Manage the user's long-term memory. Use this when the user asks to remember, save, store, forget, or delete something.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "action": {
-                        "type": "string",
-                        "enum": ["save", "delete"],
-                        "description": "Whether to save a new memory or delete an existing memory."
-                    },
-                    "content": {
-                        "type": "string",
-                        "description": "The specific memory to save or the specific memory the user wants deleted."
+                    "type": "function",
+                    "function": {
+                        "name": "memory",
+                        "description": "Get the memory",
+                        "parameters": {
+                            "type": "object",
+                            "properties": {
+                                "content": {
+                                    "type": "string",
+                                    "description": "Memory to be stored"
+                                }
+                            },
+                            "required": ["content"]
+                        }
                     }
-                },
-                "required": ["action", "content"]
-            }
-        }
-        }
+                }
 ]
 
 old_memories = mry.get_memory_tool()
@@ -212,22 +207,14 @@ while True:
                 logging.info(f"RESULT: {result}")
 
             elif function_name == "memory":
-
-                print(function_arguments)
-
-                action = function_arguments.get("action")
-                content = function_arguments.get("content")
-
-                if action == "save":
-                    result = mry.memory_tool(content)
-
-                elif action == "delete":
-                    result = mry.delete_memory(content)
-
-                else:
-                    result = "Invalid memory action."
-
-                logging.info(f"RESULT: {result}")
+            
+                    content = function_arguments.get("value")
+                    
+                    if content:
+                        result = mry.memory_tool(content)
+                    else:
+                        result = "Memory content was not provided."
+                    logging.info(f"RESULT: {result}")
 
 
 

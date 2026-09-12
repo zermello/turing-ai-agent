@@ -27,4 +27,3 @@ def get_memory():
     """)
 
     return [row[0] for row in cursor.fetchall()]
-
