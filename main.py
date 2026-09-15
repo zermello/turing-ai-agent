@@ -1,7 +1,5 @@
 import ollama
-import tools.calculator as cal
-import tools.weather as wtr
-import tools.time as time
+import tools.registry as registry
 import tools.memory_tool as mry
 import logging
 import os
@@ -133,7 +131,12 @@ def route_request(user_input):
          intents.append("none")
 
     return intents
-   
+
+tool_definitions = [
+     tool["definition"]
+     for tool in registry.tools.values()
+]
+
 while True:
 
     user_message = input("What do you want to know?: ")
@@ -152,14 +155,11 @@ while True:
 
     logging.info(f"USER: {user_message}")
 
-    selected_tools = []
-
-    for tool in tools:
-         tool_name = tool["function"]["name"]
-
-         if tool_name in intents:
-              selected_tools.append(tool)
-
+    selected_tools = [
+    registry.tools[intent]["definition"]
+    for intent in intents
+    if intent in registry.tools
+    ]
 
     # Ask Ollama what to do
     response = ollama.chat(
@@ -178,49 +178,19 @@ while True:
         for  tool_call in response.message.tool_calls:
             function_name = tool_call.function.name
             function_arguments = tool_call.function.arguments
+            print(f"{function_name}, {function_arguments}")
 
             logging.info(f"FUNCTION: {function_name}")
 
-
-            # Calculator tool
-            if function_name == "calculate":
-
-                expression = function_arguments["expression"]
-
-                result = cal.calculate(expression)
-                logging.info(f"RESULT: {result}")
-
-
-            # Weather tool
-            elif function_name == "weather":
-
-                city = function_arguments["city"]
-
-                result = wtr.get_weather(city)
-                logging.info(f"RESULT: {result}")
-            
-            elif function_name == "time":
-
-                location = function_arguments["location"]["value"]
-
-                result = time.get_time(location)
-                logging.info(f"RESULT: {result}")
-
-            elif function_name == "memory":
-            
-                    content = function_arguments.get("value")
-                    
-                    if content:
-                        result = mry.memory_tool(content)
-                    else:
-                        result = "Memory content was not provided."
-                    logging.info(f"RESULT: {result}")
-
+            function = registry.tools[function_name]["function"]
+            result = function(**function_arguments)
+            logging.info(f"RESULT: {result}")
 
 
             # Add tool result to memory
             messages.append({
                 "role": "tool",
+                "tool_name": tool_call.function.name,
                 "content": str(result)
             })
 
