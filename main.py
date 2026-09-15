@@ -17,79 +17,6 @@ logging.basicConfig(
     format = "%(asctime)s - %(levelname)s - %(message)s",
     force = True
 )
-
-
-tools = [
-    {
-        "type": "function",
-        "function": {
-            "name": "calculate",
-            "description": "Calculate a mathematical expression",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "expression": {
-                        "type": "string",
-                        "description": "The mathematical expression to calculate"
-                    }
-                },
-                "required": ["expression"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "weather",
-            "description": "Get the current weather of a city",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "city": {
-                        "type": "string",
-                        "description": "The city to get the weather for"
-                    }
-                },
-                "required": ["city"]
-            }
-        }
-    },
-    {
-            "type": "function",
-            "function": {
-                "name": "time",
-                "description": "Get the current time of a location",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "location": {
-                            "type": "string",
-                            "description": "The city to get the time"
-                        }
-                    },
-                    "required": ["location"]
-                }
-            }
-        },
-        {
-                    "type": "function",
-                    "function": {
-                        "name": "memory",
-                        "description": "Get the memory",
-                        "parameters": {
-                            "type": "object",
-                            "properties": {
-                                "content": {
-                                    "type": "string",
-                                    "description": "Memory to be stored"
-                                }
-                            },
-                            "required": ["content"]
-                        }
-                    }
-                }
-]
-
 old_memories = mry.get_memory_tool()
 
 messages = [
@@ -121,21 +48,25 @@ def route_request(user_input):
     if "weather" in user_input:
             intents.append("weather")
 
-    if any(phrase in user_input for phrase in ["remember", "save this", "store this", "don't forget"]):
+    if any(phrase in user_input for phrase in [
+          "remember", "save this", "store this", "don't forget"
+          ]):
                 intents.append("memory")
 
-    if any(operator in user_input for operator in ["+", "-", "*", "/"]):
+    if any(operator in user_input for operator in [
+          "+", "-", "*", "/"
+          ]):
             intents.append("calculate")
+
+    if any(phrase in user_input for phrase in [
+    "search", "latest", "news", "current", "online", "internet"
+    ]):
+        intents.append("web_search")
 
     if not intents:
          intents.append("none")
 
     return intents
-
-tool_definitions = [
-     tool["definition"]
-     for tool in registry.tools.values()
-]
 
 while True:
 
@@ -178,7 +109,6 @@ while True:
         for  tool_call in response.message.tool_calls:
             function_name = tool_call.function.name
             function_arguments = tool_call.function.arguments
-            print(f"{function_name}, {function_arguments}")
 
             logging.info(f"FUNCTION: {function_name}")
 
