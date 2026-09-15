@@ -2,7 +2,7 @@
 
 > A locally running AI agent that can use tools, search the web, and remember information across sessions.
 
-![Turing Demo](assets/demo.gif)
+<img src="assets/demo.gif" width="700">
 
 **Python · Ollama · Qwen · SQLite · Tavily**
 
@@ -29,7 +29,7 @@ Instead of only generating text, Turing can use external tools, retrieve real-wo
 
 ## ⚙️ How It Works
 
-![Turing Architecture](assets/architecture.png)
+<img src="assets/architecture.png" width="550">
 
 **User → Turing → Local LLM → Tool Registry → Tools → Results → Local LLM → Response**
 
