@@ -2,6 +2,7 @@ import tools.calculator as cal
 import tools.weather as wtr
 import tools.time as time
 import tools.memory_tool as mry
+import tools.web_search as web
 
 
 tools = {
@@ -88,5 +89,25 @@ tools = {
                 }
             }
         }
-    }
+    },
+    "web_search": {
+            "function": web.web_search,
+            "definition": {
+                "type": "function",
+                "function": {
+                    "name": "web_search",
+                    "description": "search in web",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string",
+                                "description": "the query to search"
+                            }
+                        },
+                        "required": ["query"]
+                    }
+                }
+            }
+        }
 }
