@@ -1,115 +1,39 @@
 # Turing AI Agent
 
-> **An extensible AI agent that can understand requests, decide when to use tools, execute Python functions, retrieve real-world data, maintain conversation context, and return intelligent responses.**
+> A locally running AI agent that can use tools, search the web, and remember information across sessions.
 
-Turing is a locally running AI agent built with Python and Ollama.
+<img src="assets/demo.gif" width="700">
 
-Unlike a traditional chatbot that only generates text, Turing can determine when external tools are required, select an appropriate tool, execute it through Python, process the result, and use that information to generate a final response.
-
-The project is being developed into a modular AI agent platform with persistent memory, multi-step workflows, web search, document intelligence, asynchronous execution, and more.
+**Python · Ollama · Qwen · SQLite · Tavily**
 
 ---
 
-# ⚡ Current Capabilities
+## 🧠 What is Turing?
 
-## 💬 Conversational AI
+Turing is a **local AI agent built with Python and Ollama**.
 
-Turing can hold conversations using a locally running language model.
+Instead of only generating text, Turing can use external tools, retrieve real-world information, search the web, and store information in persistent memory.
 
-Conversation messages are maintained throughout the active session, allowing the agent to use previous messages as context.
+### Current capabilities
 
-```text
-User
-  ↓
-Message added to conversation history
-  ↓
-Local LLM processes conversation context
-  ↓
-Response
-  ↓
-Response saved to conversation history
-```
+- 🧮 Calculator
+- 🌤️ Current weather
+- ⏰ Time and time zones
+- 🌐 Web search
+- 🧠 Persistent memory
+- 🔗 Multiple tool calls
+- 📝 Runtime logging
+- 🛡️ Error handling
 
 ---
 
-## 🧠 LLM-Powered Tool Calling
+## ⚙️ How It Works
 
-Turing does not manually choose a tool using simple keyword matching.
+<img src="assets/architecture.png" width="550">
 
-Instead, the language model receives descriptions of the available tools and decides whether a tool is necessary.
+**User → Turing → Local LLM → Tool Registry → Tools → Results → Local LLM → Response**
 
-```text
-User Request
-      │
-      ▼
-   Local LLM
-      │
-      ├── No tool needed ──► Generate response
-      │
-      └── Tool needed
-              │
-              ▼
-        Select appropriate tool
-              │
-              ▼
-       Python executes tool
-```
-
----
-
-## 🧮 Calculator Tool
-
-Turing can recognize mathematical requests and route them to a dedicated Python calculator tool.
-
-Example:
-
-```text
-User: What is 125 * 8?
-
-        ↓
-
-LLM selects:
-
-calculate(expression)
-
-        ↓
-
-Python executes calculation
-
-        ↓
-
-Result returned to LLM
-
-        ↓
-
-Final response
-```
-
----
-
-## 🌤️ Live Weather Tool
-
-Turing can retrieve current weather information for a requested location.
-
-The weather system uses a multi-step API workflow.
-
-```text
-City Name
-    │
-    ▼
-Geocoding API
-    │
-    ▼
-Latitude + Longitude
-    │
-    ▼
-Weather API
-    │
-    ▼
-Current Temperature
-```
-
-This allows the agent to transform a human-readable location into geographical coordinates before requesting weather data.
+Turing keeps its tools separate from the main agent through a **tool registry**, making the system easier to extend.
 
 ---
 
@@ -253,4 +177,4 @@ Built with Python, curiosity, and a lot of debugging. 🤖
 
 ---
 
-> **Turing is not a finished product. It is an evolving AI agent project designed to grow in complexity alongside the engineering skills behind it.** 🤖🚀
+> 🚧 Turing is an evolving project. New capabilities are being added as the architecture develops.
