@@ -13,5 +13,3 @@ def web_search(query):
     result = client.search(query)
     result = result["results"][:3]
     return result
-
-print(web_search("what is github"))
