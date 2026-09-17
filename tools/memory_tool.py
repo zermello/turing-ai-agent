@@ -1,8 +1,7 @@
-import os
+
 from memory import save_memory, get_memory
 import logging
 
-os.makedirs("data", exist_ok=True)
 
 def memory_tool(content):
     try:

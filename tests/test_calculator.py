@@ -19,4 +19,4 @@ def test_calculate_division():
 
 def test_calculate_error():
     result = cal.calculate("2/0")
-    print(result)
+    assert result == "An error has occured because of division by zero"
