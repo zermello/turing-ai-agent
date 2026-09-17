@@ -1,0 +1,5 @@
+{
+    "name": "TURING",
+    "tools": ["calculator", "weather", "memory"],
+    "version": 1
+}
