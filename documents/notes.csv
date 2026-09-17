@@ -1,0 +1,6 @@
+name,type,language,status
+TURING,AI Agent,Python,Active
+RoboArm,Manipulator,C++,Development
+VisionBot,Computer Vision,Python,Testing
+Atlas,Humanoid,C++,Research
+DroneX,Autonomous Drone,Python,Prototype
