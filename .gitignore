@@ -1,23 +1,28 @@
-# Python virtual environments
+# Python
+__pycache__/
+*.py[cod]
 .venv/
 venv/
 env/
 
-# Python cache
-__pycache__/
-*.py[cod]
-
-# Environment variables / secrets
+# Environment / secrets
 .env
+.env.*
+!.env.example
 
-# macOS
+# Runtime data
+data/*
+!data/README.md
+!data/memoryexample.db
+
+# Runtime logs
+logs/*
+!logs/README.md
+!logs/agentexample.log
+
+# OS files
 .DS_Store
 
-# VS Code
+# IDE
 .vscode/
-
-# Logs
-*.log
-
-data/*.db
-logs/
+.idea/
