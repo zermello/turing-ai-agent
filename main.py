@@ -5,7 +5,7 @@ import logging
 import os
 
 
-print("Welcome to my AI agent")
+print("HELLO, TURING HERE!!")
 
 MODEL_NAME = "qwen2.5:1.5b"
 
@@ -62,6 +62,12 @@ def route_request(user_input):
     "search", "latest", "news", "current", "online", "internet"
     ]):
         intents.append("web_search")
+
+    if any(phrase in user_input for phrase in [
+    "read file", "read document", "open file", "open document",
+    "document", "file", ".txt", ".md", ".json", ".csv", ".pdf", ".docx"
+   ]):
+        intents.append("read_document")
 
     if not intents:
          intents.append("none")

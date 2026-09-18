@@ -4,6 +4,36 @@ import tools.time as time
 import tools.memory_tool as mry
 import tools.web_search as web
 
+from pathlib import Path
+
+from tools.document_reader import (
+    txt_reader,
+    md_reader,
+    json_reader,
+    csv_reader,
+    pdf_reader,
+    docx_reader,
+)
+
+DOCUMENT_READERS = {
+    ".txt": txt_reader,
+    ".md": md_reader,
+    ".json": json_reader,
+    ".csv": csv_reader,
+    ".pdf": pdf_reader,
+    ".docx": docx_reader,
+}
+
+def read_document(file_path):
+    path = Path(file_path)
+
+    reader = DOCUMENT_READERS.get(path.suffix.lower())
+
+    if reader is None:
+        return "Unsupported file type"
+
+    return reader(file_path)
+
 
 tools = {
 
@@ -109,5 +139,25 @@ tools = {
                     }
                 }
             }
-        }
+        },
+        "document_reader": {
+                    "function": read_document,
+                    "definition": {
+                        "type": "function",
+                        "function": {
+                            "name": "document_reader",
+                            "description": "read the document and reply",
+                            "parameters": {
+                                "type": "object",
+                                "properties": {
+                                    "file_path": {
+                                        "type": "string",
+                                        "description": "the path to read and response"
+                                    }
+                                },
+                                "required": ["file_path"]
+                            }
+                        }
+                    }
+                }
 }

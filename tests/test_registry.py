@@ -19,3 +19,7 @@ def test_reg_memory():
 def test_reg_web_search():
     result = reg.tools["web_search"]["function"]("who is brad pitt?")
     assert result 
+
+def test_read_document():
+    result = reg.tools["document_reader"]["function"]("documents/notes.pdf")
+    assert result
