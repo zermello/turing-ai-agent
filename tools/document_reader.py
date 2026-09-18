@@ -95,6 +95,7 @@ def pdf_reader(file_path):
             return "Error occured"
     if not path.exists():
         return "PATH DOESN'T EXIST!!"
+    
 # docx file (.docx) reader
 def docx_reader(file_path):
     path = Path(file_path)
