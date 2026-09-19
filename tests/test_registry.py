@@ -21,5 +21,5 @@ def test_reg_web_search():
     assert result 
 
 def test_read_document():
-    result = reg.tools["document_reader"]["function"]("documents/notes.pdf")
+    result = reg.tools["read_document"]["function"]("documents/notes.pdf")
     assert result

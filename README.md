@@ -2,7 +2,10 @@
 
 > A locally running AI agent built with Python and Ollama that can use tools, search the web, remember information, read documents, and retrieve relevant information using RAG.
 
-<img src="assets/demo.mp4" width="700">
+
+    
+[<img src="assets/demo.mp4" width="700">](https://github.com/user-attachments/assets/a4d459b8-d19e-4958-9873-8a791c41cea4)
+    
 
 **Python · Ollama · Qwen 2.5 · SQLite · Tavily · RAG**
 
@@ -32,7 +35,9 @@ It can use external tools, access real-world information, maintain persistent me
 
 ## Architecture
 
+
 <img src="assets/architecture.png" width="550">
+
 
 **User → Turing → Local LLM → Tool Registry → Tools → Results → Local LLM → Response**
 
@@ -248,10 +253,6 @@ Please open an issue before making major architectural changes.
 
 ## Author
 
-**Zermello**
-
-Built with Python, curiosity, and a lot of debugging.
+**Zermello $**
 
 ---
-
-> Turing is a local AI agent project focused on learning and exploring practical AI engineering.
