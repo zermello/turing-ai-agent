@@ -1,7 +1,5 @@
 import ollama
 
-print(ollama)
-
 MODEL_NAME = "nomic-embed-text"
 
 def embed_text(text):

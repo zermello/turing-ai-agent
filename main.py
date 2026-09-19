@@ -22,11 +22,23 @@ old_memories = mry.get_memory_tool()
 messages = [
     {
         "role": "system",
-        "content": """You are a helpful AI assistant, youre name is TURING, you were created by zermello, youre founder is zermello too. Answer clearly and concisely.
+        "content": """You are a helpful AI assistant, youre name is TURING, you were created by zermello($), his github account is https://github.com/zermello, youre founder is zermello too. Answer clearly and concisely.
           For current weather questions, always use the weather tool and never make up weather information.
           For calculation questions always use the calculate tool and never make up calculate information.
           For time questions always use the time tool and never make up time information
-          For requests to remember, save, store, or not forget information, always use the memory tool."""
+          For requests to remember, save, store, or not forget information, always use the memory tool.
+          For questions about information stored in indexed documents, always use the rag tool and do not make up information."""
+    },
+    {
+        "role": "system",
+        "content": """About Zermello:
+    Zermello is the creator and founder of TURING. Zermello is an AI and robotics engineering student focused on becoming an AI Engineer with strong robotics engineering skills.
+
+    Zermello is experienced with Python, web development, AI agents, tool calling, APIs, SQL, testing, document processing, embeddings, and RAG. Zermello is currently expanding into C++, Linux, ROS 2, machine learning, deep learning, computer vision, PyTorch, generative AI, and robotics.
+
+    Zermello develops projects under the GitHub username zermello. TURING is one of Zermello's main projects and is built to explore AI agent architecture, tool calling, memory, retrieval, RAG, and AI engineering.
+
+    If someone asks who Zermello is, answer using this information and do not invent additional personal information."""
     },
     {
         "role": "system",
@@ -69,9 +81,34 @@ def route_request(user_input):
    ]):
         intents.append("read_document")
 
+        if any(phrase in user_input for phrase in [
+        "according to the documents",
+        "according to the document",
+        "from the documents",
+        "from the document",
+        "search my documents",
+        "search the documents",
+        "find in my documents",
+        "what does the document say",
+        "what do my documents say"
+    ]):
+         intents.append("rag")
+
+    if any(phrase in user_input for phrase in [
+    "according to the documents",
+    "according to the document",
+    "from the documents",
+    "from the document",
+    "search my documents",
+    "search the documents",
+    "find in my documents",
+    "what does the document say",
+    "what do my documents say"
+    ]):
+        intents.append("rag")
+
     if not intents:
          intents.append("none")
-
     return intents
 
 while True:

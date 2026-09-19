@@ -3,8 +3,6 @@ the logic is from the cosine similarity formula
 cosine similarity (a,b) = dot product (a.b) / (magnitude A (|A|) * magnitude B (|B|))
 """
 
-from embeddings.ollama_embedding import embed_text
-
 
 from math import sqrt
 

@@ -3,36 +3,11 @@ import tools.weather as wtr
 import tools.time as time
 import tools.memory_tool as mry
 import tools.web_search as web
+# import tools.rag as rag
+from RAG.indexer import index_document
+from tools.document_reader import read_document
 
 from pathlib import Path
-
-from tools.document_reader import (
-    txt_reader,
-    md_reader,
-    json_reader,
-    csv_reader,
-    pdf_reader,
-    docx_reader,
-)
-
-DOCUMENT_READERS = {
-    ".txt": txt_reader,
-    ".md": md_reader,
-    ".json": json_reader,
-    ".csv": csv_reader,
-    ".pdf": pdf_reader,
-    ".docx": docx_reader,
-}
-
-def read_document(file_path):
-    path = Path(file_path)
-
-    reader = DOCUMENT_READERS.get(path.suffix.lower())
-
-    if reader is None:
-        return "Unsupported file type"
-
-    return reader(file_path)
 
 
 tools = {
@@ -140,24 +115,69 @@ tools = {
                 }
             }
         },
-        "document_reader": {
-                    "function": read_document,
-                    "definition": {
-                        "type": "function",
-                        "function": {
-                            "name": "document_reader",
-                            "description": "read the document and reply",
-                            "parameters": {
-                                "type": "object",
-                                "properties": {
-                                    "file_path": {
-                                        "type": "string",
-                                        "description": "the path to read and response"
-                                    }
-                                },
-                                "required": ["file_path"]
+        "read_document": {
+                        "function": read_document,
+                        "definition": {
+                            "type": "function",
+                            "function": {
+                                "name": "read_document",
+                                "description": "Read and extract content from a document file",
+                                "parameters": {
+                                    "type": "object",
+                                    "properties": {
+                                        "file_path": {
+                                            "type": "string",
+                                            "description": "Path to the document file"
+                                        }
+                                    },
+                                    "required": ["file_path"]
+                                }
                             }
                         }
-                    }
-                }
+                    },
+                    "index_document": {
+                        "function": index_document,
+                        "definition": {
+                            "type": "function",
+                            "function": {
+                                "name": "index_document",
+                                "description": "Index a document for later semantic search using RAG",
+                                "parameters": {
+                                    "type": "object",
+                                    "properties": {
+                                        "file_path": {
+                                            "type": "string",
+                                            "description": "Path to the document to index"
+                                        }
+                                    },
+                                    "required": ["file_path"]
+                                }
+                            }
+                        }
+                    },
+
+#             "rag": {
+#                 "function": rag.rag_tool,
+#                 "definition": {
+#                     "type": "function",
+#                     "function": {
+#                         "name": "rag",
+#                         "description": "Search indexed documents and retrieve relevant information",
+#                         "parameters": {
+#                             "type": "object",
+#                             "properties": {
+#                                 "query": {
+#                                     "type": "string",
+#                                     "description": "The question or information to search for"
+#                                 },
+#                                 "k": {
+#                                     "type": "integer",
+#                                     "description": "Number of relevant chunks to retrieve"
+#                                 }
+#                             },
+#                             "required": ["query"]
+#                         }
+#                     }
+#                 }
+#             }
 }

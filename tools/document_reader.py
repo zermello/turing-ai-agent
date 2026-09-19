@@ -116,3 +116,22 @@ def docx_reader(file_path):
             return "Error occured"
     if not path.exists():
         return "PATH DOESN'T EXIST!!"
+
+DOCUMENT_READERS = {
+    ".txt": txt_reader,
+    ".md": md_reader,
+    ".json": json_reader,
+    ".csv": csv_reader,
+    ".pdf": pdf_reader,
+    ".docx": docx_reader,
+}
+
+def read_document(file_path):
+    path = Path(file_path)
+
+    reader = DOCUMENT_READERS.get(path.suffix.lower())
+
+    if reader is None:
+        return "Unsupported file type"
+
+    return reader(file_path)
